@@ -7,8 +7,6 @@ import RouteElement from "../ui/RouteElement";
 function Home() {
     const [roadsData] = useState<Route[]>(data.routes)
 
-    console.log(roadsData)
-
     return (
         <HomeContainer>
             {
