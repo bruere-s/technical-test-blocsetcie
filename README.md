@@ -8,7 +8,10 @@
 ### Clone
 
 - Clone this repo to your local machine using: <br />
-`git clone https://github.com/bruere-s/technical-test-blocsetcie.git`
+```
+git clone https://github.com/bruere-s/technical-test-blocsetcie.git
+cd technical-test-blocsetcie
+```
 
 ### Setup
 
