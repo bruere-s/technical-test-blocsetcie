@@ -2,9 +2,10 @@ import React from 'react';
 import styled from 'styled-components'
 import Location from "../types/location";
 import {headingDistanceTo} from 'geolocation-utils'
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@material-ui/core";
 
 interface IProps {
-  locations: Location[]
+    locations: Location[]
 }
 
 function LocationsElement(props: IProps) {
@@ -41,40 +42,45 @@ function LocationsElement(props: IProps) {
     }
 
     return (
-        <LocationsElementContainer>
-            <Total>Total distance: {getTotalDistance()} m</Total>
-            {
-                locations && locations.map((location, index) => {
-                    const { timestamp, coords: { latitude, longitude } } = location
-                    return (
-                        <LocationElement key={timestamp}>
-                            <p><span>{index + 1})</span> Date: {getPrettyDate(location)}</p>
-                            <p>Lat: {latitude} - Long: {longitude}</p>
-                        </LocationElement>
-                        )
+        <>
+            <TableContainer component={Paper}>
+                <Total>Total distance: {getTotalDistance()} m</Total>
+                <Table size="small" aria-label="a dense table">
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Location</TableCell>
+                            <TableCell align="right">Latitude</TableCell>
+                            <TableCell align="right">Longitude</TableCell>
+                            <TableCell align="right">Date</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        {
+                            locations && locations.map((location, index) => {
+                                const { timestamp, coords: { latitude, longitude } } = location
 
-                })
-            }
-        </LocationsElementContainer>
+                                return (
+                                    <TableRow key={timestamp}>
+                                        <TableCell component="th" scope="row" size="small">
+                                            {index + 1}
+                                        </TableCell>
+                                        <TableCell align="right">{latitude}</TableCell>
+                                        <TableCell align="right">{longitude}</TableCell>
+                                        <TableCell align="right">{getPrettyDate(location)}</TableCell>
+                                    </TableRow>
+                                )})
+                        }
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </>
     );
 }
 
 export default LocationsElement;
 
-const LocationsElementContainer = styled.section`
-  padding: 15px;
-  
-  p span {
-    font-weight: bold;
-    font-size: 22px;
-  }
-`;
-
-const LocationElement = styled.div`
-  margin-bottom: 12px;
-`
-
 const Total = styled.p`
-  text-align: center;
-  font-weight: bold;
+font-family: 'Roboto',serif;
+text-align: center;
+font-weight: bold;
 `

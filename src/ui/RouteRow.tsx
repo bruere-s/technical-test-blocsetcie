@@ -1,16 +1,17 @@
 import React, {useState} from 'react';
 import styled from 'styled-components'
 import Route from "../types/Route";
-import {Modal} from "@material-ui/core";
+import {Modal, TableCell, TableRow} from "@material-ui/core";
 import LocationsElement from "./LocationsElement";
+import DriveEtaIcon from '@material-ui/icons/DriveEta';
 
 interface IProps {
     index: number,
-  route: Route
+    route: Route
 }
 
-function RouteElement(props: IProps) {
-    const { index, route, route: {locations} } = props
+function RouteRow(props: IProps) {
+    const { index, route, route: {locations, id} } = props
     const [modalOpen, setModelOpen] = useState(false)
 
     const getPrettyDate = () => {
@@ -20,7 +21,7 @@ function RouteElement(props: IProps) {
         return (
             new Intl.DateTimeFormat('en-US',
                 {year: 'numeric', month: '2-digit',day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit'}
-                ).format(date)
+            ).format(date)
         )
     }
 
@@ -29,20 +30,21 @@ function RouteElement(props: IProps) {
 
         switch (activity) {
             case "in_vehicle":
-                return "Vehicule"
+                return <DriveEtaIcon />
             default:
                 return ""
         }
     }
 
     return (
-        <RouteElementContainer>
-            <p><span>{index + 1})</span> made in: {getPrettyActivity()}</p>
-            <p>Date: {getPrettyDate()}</p>
-
-            <button type="button" onClick={() => {setModelOpen(true)}}>
-                View list
-            </button>
+        <>
+            <CustomTableRow key={id} onClick={() => {setModelOpen(true)}}>
+                <TableCell component="th" scope="row">
+                    {index + 1}
+                </TableCell>
+                <TableCell align="right">{getPrettyActivity()}</TableCell>
+                <TableCell align="right">{getPrettyDate()}</TableCell>
+            </CustomTableRow>
             <Modal
                 open={modalOpen}
                 onClose={() => {setModelOpen(false)}}
@@ -53,18 +55,16 @@ function RouteElement(props: IProps) {
                     <LocationsElement locations={locations} />
                 </BodyModal>
             </Modal>
-        </RouteElementContainer>
+        </>
     );
 }
 
-export default RouteElement;
+export default RouteRow;
 
-const RouteElementContainer = styled.section`
-  padding: 10px;
-  
-  p span {
-    font-weight: bold;
-    font-size: 22px;
+const CustomTableRow = styled(TableRow)`
+  &:hover {
+    background-color: #cecece;
+    cursor: pointer;
   }
 `;
 
